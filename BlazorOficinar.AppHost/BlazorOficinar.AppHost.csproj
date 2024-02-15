@@ -10,13 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" Version="8.0.0-preview.1.23557.2" />
-    <PackageReference Include="Aspire.Npgsql" Version="8.0.0-preview.2.23619.3" />
-    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.2.23619.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BlazorOficinar.ServiceDefaults\BlazorOficinar.ServiceDefaults.csproj" />
-    <ProjectReference Include="..\BlazorOficinar\BlazorOficinar.csproj" />
   </ItemGroup>
 
 </Project>
