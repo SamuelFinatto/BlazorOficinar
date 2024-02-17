@@ -38,7 +38,7 @@ jobs:
         with:
           path: ~/release
       - name: copy release folder to Nginx
-        run: cp -r ~/release/artifact/ /var/www/html
+        run: sudo cp -r ~/release/artifact/*.* /var/www/html
 
   deploy-to-github-pages:
     # use ubuntu-latest image to run steps on
