@@ -37,8 +37,12 @@ jobs:
         uses: actions/download-artifact@v4.1.2
         with:
           path: ~/release
+      - name: stop dotnet service
+        run: sudo systemctl stop kestrel-oficinarapp.service
       - name: copy release folder to Nginx
         run: sudo cp -r ~/release/artifact/*.* /var/www/html
+      - name: start dotnet service
+        run: sudo systemctl start kestrel-oficinarapp.service
 
   deploy-to-github-pages:
     # use ubuntu-latest image to run steps on
