@@ -1,0 +1,28 @@
+name: Deploy OracleInstance code
+
+# Run workflow on every push to the master branch
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy-to-github-pages:
+    # use ubuntu-latest image to run steps on
+    runs-on: [dotnet-8]
+    steps:
+    # uses GitHub's checkout action to checkout code form the master branch
+    - uses: actions/checkout@v2
+    
+    # sets up .NET Core SDK 3.1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    # publishes Blazor project to the release-folder
+    - name: Publish .NET Core Project
+      run: dotnet publish OficinarBackEnd/OficinarBackEnd.csproj -c Release -o release --nologo
+
+    # copy index.html to 404.html to serve the same file when a file is not found
+    - name: copy release folder to Nginx
+      run: cp release/ /var/www/html
