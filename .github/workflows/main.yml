@@ -6,20 +6,38 @@ on:
     branches: [ master ]
 
 jobs:
-  deploy-to-orcale-instance-backend:
+  build-backend:
     # use ubuntu-latest image to run steps on
-    runs-on: [dotnet-8]
+    runs-on: ubuntu-latest
     steps:
     # uses GitHub's checkout action to checkout code form the master branch
     - uses: actions/checkout@v2
+
+    # sets up .NET Core SDK 3.1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
 
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
       run: dotnet publish OficinarBackEnd/OficinarBackEnd.csproj -c Release -o release --nologo
 
-    # copy index.html to 404.html to serve the same file when a file is not found
-    - name: copy release folder to Nginx
-      run: cp release/ /var/www/html
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        path: release/*
+        overwrite: true
+
+  deploy-backend-to-oracle-instance:
+    runs-on: [dotnet-8]
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.2
+        with:
+          path: ~/release
+      - name: copy release folder to Nginx
+        run: cp ~/release/ /var/www/html
 
   deploy-to-github-pages:
     # use ubuntu-latest image to run steps on
