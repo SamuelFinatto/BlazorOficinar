@@ -33,11 +33,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-nBotN\/5Y0CQexbzjF9Toqt0krMscaqz7TAvJXFxsjd0=",
+      "hash": "sha256-0YfihcOxgbUJ1yiev7CbI6thwssrPZdl+mAqqhMA53E=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-MtI6bUKFOZkQvR6ZyKOdq8ituWtDuMy1C4E5DseipLU=",
+      "hash": "sha256-2OcbjiggN1EwddWO+kIdRDONSgNMArdR\/ezkH6SLs34=",
       "url": "_framework\/BlazorOficinar.wasm"
     },
     {
@@ -237,5 +237,5 @@
       "url": "sample-data\/weather.json"
     }
   ],
-  "version": "0HafaGHZ"
+  "version": "XDJeQH84"
 };
