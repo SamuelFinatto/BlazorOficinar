@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using OficinarCommon.Models;
 
 namespace OficinarBackEnd.Models;
 

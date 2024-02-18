@@ -1,0 +1,55 @@
+﻿@page "/editar-cliente/{id:int}"
+@using OficinarCommon.Models
+@using BlazorOficinar.Services
+
+<h3>Editar Cliente</h3>
+
+@if (cliente == null)
+{
+    <p>Carregando...</p>
+}
+else
+{
+    <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input type="text" class="form-control" @bind="cliente.Nome" />
+    </div>
+    <div class="form-group">
+        <label for="cpf">CPF:</label>
+        <input type="text" class="form-control" @bind="cliente.Cpf" />
+    </div>
+    <div class="form-group">
+        <label for="endereco">Endereço:</label>
+        <input type="text" class="form-control" @bind="cliente.Endereco" />
+    </div>
+    <div class="form-group">
+        <label for="aniversario">Aniversário:</label>
+        <input type="date" class="form-control" @bind="cliente.Aniversario" />
+    </div>
+
+    <button class="btn btn-primary" @onclick="Atualizar">Atualizar</button>
+}
+
+@code {
+    Cliente cliente;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    ClienteService clienteService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        cliente = await clienteService.GetClienteById(Id);
+    }
+
+    private async Task Atualizar()
+    {
+        await clienteService.UpdateCliente(cliente);
+        NavigationManager.NavigateTo("/clientes");
+    }
+}

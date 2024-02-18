@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlazorOficinar.ServiceDefaults\BlazorOficinar.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\OficinarCommon\OficinarCommon.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,4 +13,6 @@ builder.Services.AddSingleton(settings);
 
 builder.Services.AddScoped(sp => new HttpClient () { BaseAddress = new Uri(settings.ServerBackEndUrl ?? builder.HostEnvironment.BaseAddress) });
 
+builder.Services.AddScoped<ClienteService>();
+
 await builder.Build().RunAsync();

@@ -1,0 +1,77 @@
+﻿@page "/clientes"
+@using BlazorOficinar.Services
+@using OficinarCommon.Models
+@inject NavigationManager navigationManager
+@inject ClienteService clienteService
+@inject IJSRuntime jsRuntime
+<h3>Clientes</h3>
+
+@if (clientes == null)
+{
+    <p>Carregando...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Cpf</th>
+                <th>Aniversário</th>
+                <th>Endereço</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in clientes)
+            {
+                <tr>
+                    <td>@cliente.Id</td>
+                    <td>@cliente.Nome</td>
+                    <td>@cliente.Cpf</td>
+                    <td>@cliente.Aniversario?.ToString("dd/MM/yyyy")</td>
+                    <td>@cliente.Endereco</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditarCliente(cliente.Id)">Editar</button>
+                        <button class="btn btn-danger" @onclick="() => DeletarCliente(cliente.Id)">Deletar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-success" @onclick="AdicionarCliente">Adicionar Cliente</button>
+}
+
+@code {
+    IEnumerable<Cliente> clientes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CarregarClientes();
+    }
+
+    private async Task CarregarClientes()
+    {
+        clientes = await clienteService.GetClientes();
+    }
+
+    private async Task AdicionarCliente()
+    {
+        navigationManager.NavigateTo("/novo-cliente");
+    }
+
+    private async Task EditarCliente(int id)
+    {
+        navigationManager.NavigateTo($"/editar-cliente/{id}");
+    }
+
+    private async Task DeletarCliente(int id)
+    {
+        if (await jsRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja deletar este cliente?"))
+        {
+            await clienteService.DeleteCliente(id);
+            await CarregarClientes();
+        }
+    }
+}

@@ -3,21 +3,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace OficinarBackEnd.Models;
+namespace OficinarCommon.Models;
 
-public partial class Agendamento
+public partial class Servico
 {
     public int Id { get; set; }
 
-    public int? IdCliente { get; set; }
+    public string NomeServico { get; set; }
 
-    public DateTime DataHoraAgendamento { get; set; }
-
-    public DateTime? DataCriacao { get; set; }
-
-    public DateTime? DataModificacao { get; set; }
+    public decimal PrecoHora { get; set; }
 
     public virtual ICollection<AgendamentoServico> AgendamentoServicos { get; set; } = new List<AgendamentoServico>();
-
-    public virtual Cliente IdClienteNavigation { get; set; }
 }

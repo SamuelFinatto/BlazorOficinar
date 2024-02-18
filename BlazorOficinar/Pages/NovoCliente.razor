@@ -1,0 +1,40 @@
+﻿@page "/novo-cliente"
+@using OficinarCommon.Models
+@using BlazorOficinar.Services
+
+<h3>Novo Cliente</h3>
+
+<div class="form-group">
+    <label for="nome">Nome:</label>
+    <input type="text" class="form-control" @bind="novoCliente.Nome" />
+</div>
+<div class="form-group">
+    <label for="cpf">CPF:</label>
+    <input type="text" class="form-control" @bind="novoCliente.Cpf" />
+</div>
+<div class="form-group">
+    <label for="endereco">Endereço:</label>
+    <input type="text" class="form-control" @bind="novoCliente.Endereco" />
+</div>
+<div class="form-group">
+    <label for="aniversario">Aniversário:</label>
+    <input type="date" class="form-control" @bind="novoCliente.Aniversario" />
+</div>
+
+<button class="btn btn-primary" @onclick="Adicionar">Adicionar</button>
+
+@code {
+    Cliente novoCliente = new Cliente();
+
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    ClienteService clienteService { get; set; }
+
+    private async Task Adicionar()
+    {
+        await clienteService.AddCliente(novoCliente);
+        NavigationManager.NavigateTo("/clientes");
+    }
+}
