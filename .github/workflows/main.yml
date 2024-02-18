@@ -6,9 +6,48 @@ on:
     branches: [ master ]
 
 jobs:
+  build-backend:
+    # use ubuntu-latest image to run steps on
+    runs-on: ubuntu-latest
+    steps:
+    # uses GitHub's checkout action to checkout code form the master branch
+    - uses: actions/checkout@v2
+
+    # sets up .NET Core SDK 3.1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    # publishes Blazor project to the release-folder
+    - name: Publish .NET Core Project
+      run: dotnet publish OficinarBackEnd/OficinarBackEnd.csproj -c Release -o release --nologo
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        path: release/*
+        overwrite: true
+
+  deploy-backend-to-oracle-instance:
+    runs-on: [dotnet-8]
+    needs: build-backend
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.2
+        with:
+          path: ~/release
+      - name: stop dotnet service
+        run: sudo systemctl stop kestrel-oficinarapp.service
+      - name: copy release folder to Nginx
+        run: sudo cp -r ~/release/artifact/*.* /var/www/html
+      - name: start dotnet service
+        run: sudo systemctl start kestrel-oficinarapp.service
+
   deploy-to-github-pages:
     # use ubuntu-latest image to run steps on
     runs-on: ubuntu-latest
+    needs: deploy-backend-to-oracle-instance
     steps:
     # uses GitHub's checkout action to checkout code form the master branch
     - uses: actions/checkout@v2
