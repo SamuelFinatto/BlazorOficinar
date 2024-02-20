@@ -1,6 +1,7 @@
 ﻿@page "/"
+@using BlazorOficinar.Services
 @using Microsoft.AspNetCore.SignalR.Client
-
+@inject ClientAppSettings clientAppSettings
 <PageTitle>Home</PageTitle>
 
 <div class="form-group">
@@ -31,16 +32,14 @@
     private List<string> messages = new List<string>();
     private string? userInput;
     private string? messageInput;
-
+    private string signalRUrl;
     public bool IsConnected =>
         _reportDataHubConnection?.State == HubConnectionState.Connected;
 
     protected override async Task OnInitializedAsync()
     {
-        var apiAddress = "https://localhost:8081";
-
-
-        var sensorDataUrl = ($"{apiAddress}/chathub");
+        signalRUrl = clientAppSettings.ServerBackEndUrl.Trim('/');
+        var sensorDataUrl = ($"{signalRUrl}/chathub");
         _reportDataHubConnection = new HubConnectionBuilder()
                         .WithUrl(sensorDataUrl)
                         .Build();
